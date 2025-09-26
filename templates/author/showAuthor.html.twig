@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails Auteur{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card mx-auto shadow-sm" style="max-width: 500px;">
+        <img src="{{ asset(author.picture) }}" class="card-img-top" alt="{{ author.username }}">
+        <div class="card-body">
+            <h3 class="card-title text-center">{{ author.username }}</h3>
+            <p class="card-text"><strong>Email:</strong> {{ author.email }}</p>
+            <p class="card-text"><strong>Nombre de livres:</strong> {{ author.nb_books }}</p>
+            <div class="d-grid gap-2">
+                <a href="{{ path('list_authors') }}" class="btn btn-secondary">Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

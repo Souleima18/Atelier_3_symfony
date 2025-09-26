@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des auteurs{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Liste des auteurs</h1>
+
+    {% if authors is not defined or authors is empty %}
+        <div class="alert alert-warning text-center">Aucun auteur trouvé.</div>
+    {% else %}
+        {% set total_books = 0 %}
+        {% for author in authors %}
+            {% set total_books = total_books + author.nb_books %}
+        {% endfor %}
+
+        <div class="mb-3 text-center">
+            <span class="badge bg-primary fs-6">Nombre d’auteurs : {{ authors|length }}</span>
+            <span class="badge bg-success fs-6">Nombre total de livres : {{ total_books }}</span>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for author in authors %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{ asset(author.picture) }}" class="card-img-top" alt="{{ author.username }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ author.username|upper }}</h5>
+                            <p class="card-text"><strong>Email:</strong> {{ author.email }}</p>
+                            <p class="card-text"><strong>Livres:</strong> {{ author.nb_books }}</p>
+                            <a href="{{ path('author_details', {id: author.id}) }}" class="btn btn-primary w-100">Détails</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
