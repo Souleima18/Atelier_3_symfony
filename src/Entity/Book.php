@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,7 +27,18 @@ class Book
 
     #[ORM\ManyToOne(inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Author $yes = null;
+    private ?Author $author = null;
+
+    /**
+     * @var Collection<int, Reader>
+     */
+    #[ORM\ManyToMany(targetEntity: Reader::class, inversedBy: 'books')]
+    private Collection $readers;
+
+    public function __construct()
+    {
+        $this->readers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -76,6 +89,30 @@ class Book
     public function setYes(?Author $yes): static
     {
         $this->yes = $yes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reader>
+     */
+    public function getReaders(): Collection
+    {
+        return $this->readers;
+    }
+
+    public function addReader(Reader $reader): static
+    {
+        if (!$this->readers->contains($reader)) {
+            $this->readers->add($reader);
+        }
+
+        return $this;
+    }
+
+    public function removeReader(Reader $reader): static
+    {
+        $this->readers->removeElement($reader);
 
         return $this;
     }
