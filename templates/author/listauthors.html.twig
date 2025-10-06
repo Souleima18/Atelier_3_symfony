@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des auteurs{% endblock %}
+
+{% block body %}
+<h1>Liste des Auteurs</h1>
+
+{% if authors is empty %}
+    <p>Aucun auteur trouvé.</p>
+{% else %}
+    <table border="1" cellspacing="0" cellpadding="8">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom d'utilisateur</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for author in authors %}
+                <tr>
+                    <td>{{ author.id }}</td>
+                    <td>{{ author.username }}</td>
+                    <td>{{ author.email }}</td>
+                    <td>
+                        {# Bouton delete #}
+                        <form method="post" action="{{ path('author_delete', {'id': author.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet auteur ?');">
+                            <button type="submit">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}

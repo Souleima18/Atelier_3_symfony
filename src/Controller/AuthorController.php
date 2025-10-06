@@ -5,6 +5,10 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\AuthorRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Author;
 
 final class AuthorController extends AbstractController
 {
@@ -56,6 +60,47 @@ public function authorDetails(int $id): Response
     return $this->render('author/showAuthor.html.twig', [
         'author' => $author,
     ]);
+}
+#[Route('/getAll', name: 'app_get')]
+    public function getAllAuthor(AuthorRepository $authRepo): Response
+    {
+        $authors = $authRepo->findAll();
+
+        return $this->render('author/listauthors.html.twig', [
+            'authors' => $authors
+        ]);
+    }
+    #[Route('/addAuth', name: 'app_add')]
+    public function AddAuthor(ManagerRegistry $em): Response
+    {
+        $auth1 =new Author();
+        $auth1->setUsername('Author1');
+        $auth1->setEmail('author1@esprit.tn');
+        
+        $auth2 =new Author();
+        $auth2->setUsername('Author2');
+        $auth2->setEmail('author2@esprit.tn');
+        
+        $em->getManager()->persist($auth1);
+        $em->getManager()->persist($auth2);
+        $em->getManager()->flush();
+        return new Response('Author Added');
+    
+    }
+   #[Route('/author/delete/{id}', name: 'author_delete')]
+public function deleteAuthor(int $id, ManagerRegistry $doctrine, AuthorRepository $authRepo): Response
+{
+    $author = $authRepo->find($id);
+
+    if (!$author) {
+        throw $this->createNotFoundException("Auteur introuvable !");
+    }
+
+    $em = $doctrine->getManager();
+    $em->remove($author);
+    $em->flush();
+
+    return $this->redirectToRoute('app_get'); // Redirige vers la liste après suppression
 }
 
 }
