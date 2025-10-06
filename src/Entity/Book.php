@@ -23,6 +23,10 @@ class Book
     #[ORM\Column]
     private ?bool $enabled = null;
 
+    #[ORM\ManyToOne(inversedBy: 'books')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Author $yes = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +64,18 @@ class Book
     public function setEnabled(bool $enabled): static
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getYes(): ?Author
+    {
+        return $this->yes;
+    }
+
+    public function setYes(?Author $yes): static
+    {
+        $this->yes = $yes;
 
         return $this;
     }
