@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un auteur{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4 mx-auto" style="max-width: 600px;">
+        <div class="card-body p-5">
+            <h1 class="text-center text-primary mb-4 fw-bold">
+                <i class="bi bi-person-plus-fill"></i> Ajouter un auteur
+            </h1>
+
+            <form method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label fw-semibold">Nom d'utilisateur :</label>
+                    <input type="text" id="username" name="username" 
+                           class="form-control form-control-lg rounded-3"
+                           placeholder="Entrez le nom d'utilisateur" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="email" class="form-label fw-semibold">Email :</label>
+                    <input type="email" id="email" name="email" 
+                           class="form-control form-control-lg rounded-3"
+                           placeholder="Entrez l'adresse email" required>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{{ path('app_get') }}" class="btn btn-outline-secondary px-4 py-2">
+                        <i class="bi bi-arrow-left"></i> Retour
+                    </a>
+
+                    <button type="submit" class="btn btn-success px-4 py-2 shadow-sm">
+                        <i class="bi bi-check-circle"></i> Ajouter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{# ✅ Style personnalisé pour un design unique et harmonieux #}
+<style>
+    body {
+        background: linear-gradient(135deg, #e9f5ff, #fdfbfb);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .card {
+        background-color: #ffffff;
+        border: none;
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 5px rgba(13, 110, 253, 0.4);
+    }
+
+    .btn {
+        border-radius: 30px;
+        font-weight: 500;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+{% endblock %}

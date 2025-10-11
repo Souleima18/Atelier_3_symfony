@@ -1,36 +1,93 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des auteurs{% endblock %}
+{% block title %}Liste des Auteurs{% endblock %}
 
 {% block body %}
-<h1>Liste des Auteurs</h1>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold text-primary">👤 Liste des Auteurs</h1>
+        <a href="{{ path('author_add_form') }}" class="btn btn-success shadow-sm px-4 py-2">
+            <i class="bi bi-person-plus"></i> Ajouter un auteur
+        </a>
+    </div>
 
-{% if authors is empty %}
-    <p>Aucun auteur trouvé.</p>
-{% else %}
-    <table border="1" cellspacing="0" cellpadding="8">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom d'utilisateur</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for author in authors %}
-                <tr>
-                    <td>{{ author.id }}</td>
-                    <td>{{ author.username }}</td>
-                    <td>{{ author.email }}</td>
-                    <td>
-                        {# Bouton delete #}
-                        <form method="post" action="{{ path('author_delete', {'id': author.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet auteur ?');">
-                            <button type="submit">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
+    {% if authors is empty %}
+        <div class="alert alert-info text-center shadow-sm">
+            Aucun auteur trouvé.
+        </div>
+    {% else %}
+        <div class="table-responsive shadow-sm rounded-4">
+            <table class="table table-hover align-middle">
+                <thead class="table-primary text-center">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom d'utilisateur</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for author in authors %}
+                        <tr>
+                            <td class="fw-semibold">{{ author.id }}</td>
+                            <td>{{ author.username }}</td>
+                            <td>{{ author.email }}</td>
+                            <td class="text-center">
+                                <a href="{{ path('author_update', {'id': author.id}) }}" 
+                                   class="btn btn-outline-primary btn-sm me-2">
+                                    <i class="bi bi-pencil-square"></i> Modifier
+                                </a>
+                                <form method="post" 
+                                      action="{{ path('author_delete', {'id': author.id}) }}" 
+                                      class="d-inline"
+                                      onsubmit="return confirm('Voulez-vous vraiment supprimer cet auteur ?');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Supprimer
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+
+{# ✅ Style personnalisé pour un rendu unique #}
+<style>
+    body {
+        background: linear-gradient(135deg, #f0f8ff, #e9f5ff);
+        min-height: 100vh;
+    }
+
+    h1 {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .table {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #e8f0ff;
+        transition: 0.3s ease;
+    }
+
+    .btn {
+        border-radius: 30px;
+        font-weight: 500;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+    }
+
+    .alert {
+        font-size: 1.1rem;
+    }
+</style>
+
 {% endblock %}
